@@ -154,14 +154,13 @@ export const Modal = () => {
 };
 
 export const List = (props) => {
-  const { data } = props;
-  const fruits = data[1];
-  console.log(fruits);
+  const { data, category } = props;
+  const grocery = data[category];
   return (
     <div className='col-sm'>
       <div className='row'>
-        {fruits.map((fruit) => (
-          <Card fruit={fruit} />
+        {grocery.map((fruit) => (
+          <Card key={fruit.ref} fruit={fruit} />
         ))}
       </div>
     </div>

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { addtoCart } from '../lib/actions'
 
-export const Navbar = ({ filter, setFiltering, count }) => {
+export const Navbar = ({ filter, setFiltering  }) => {
+  const items = useSelector(state => state.items)
   return (
     <nav className="navbar orange navbar-expand-lg navbar-light bg-light fixed-top">
         <Link  className="navbar-brand crimson" to="/">   <i class="fas fa-shopping-cart"></i> Mes Courses en Ligne</Link>
@@ -37,7 +40,7 @@ export const Navbar = ({ filter, setFiltering, count }) => {
              <Link to="/cart">
                 <i class="fas fa-shopping-bag fa-2x grey"></i>
              </Link>
-              <span class="badge badge-pill badge-success">{count}</span>
+              <span class="badge badge-pill badge-success">{items.length > 0 && items.length}</span>
           </div>
         </div>
       </div>
@@ -56,7 +59,7 @@ export const Footer = () => {
 };
 
 export const Card = props => {
-  const { item, addToCart, count } = props
+  const { item, count } = props
   return (
     <div className="col-sm-4">
       <div className="card">
@@ -80,14 +83,19 @@ export const Card = props => {
           </div>
         </div>
       </div>
-      <Modal item={item} addToCart={addToCart} count={count}/>
+      <Modal item={item} count={count}/>
     </div>
   );
 };
 
 
-export const Modal = ({ item, addToCart, count }) => {
+export const Modal = ({ item }) => {
   const [qty, setQty] = useState(1);
+  const dispatch = useDispatch()
+
+  const add = (item, quantity) => {
+    dispatch(addtoCart(item, quantity))
+  }
   return (
     <div
       class="modal fade "
@@ -136,14 +144,14 @@ export const Modal = ({ item, addToCart, count }) => {
                   aria-label="Basic example"
                 >
                   <button
-                    onClick={() => setQty(count > 1 ? count - 1 : 1)}
+                    onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
                     type="button"
                     className="btn btn-secondary">
                     -
                   </button>
                     <span className="btn btn-light qty">{qty}</span>
                   <button
-                    onClick={() => setQty(count + 1)}
+                    onClick={() => setQty(qty + 1)}
                     type="button"
                     className="btn btn-secondary">
                     +
@@ -165,7 +173,7 @@ export const Modal = ({ item, addToCart, count }) => {
               type="button"
               class="btn btn-success"
               data-dismiss="modal"
-              onClick={()=> addToCart(count + 1)}
+              onClick={()=> add(item, qty)}
             >
               Add to Cart
             </button>
@@ -178,12 +186,12 @@ export const Modal = ({ item, addToCart, count }) => {
 
 
 export const List = props => {
-  const { data, category, addToCart, count } = props
+  const { data } = props
 
   return (
     <div className="col-sm">
       <div className="row">
-        {data.map(item => <Card key={item.ref} item={item} addToCart={addToCart} count={count}/>)}
+        {data.map(item => <Card key={item.ref} item={item}  />)}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react'
-import { List } from '../components'
+import { List } from  '../../components'
 
 const SideMenu = ({ loadCategory, category }) => {
     const links = ["Fruits", "Légumes", "Produits Frais", "Epicerie", "Boissons"]
@@ -15,13 +15,13 @@ const SideMenu = ({ loadCategory, category }) => {
   }
 
 export const Home = props => {
-    const { isFiltering, filtered, list, category, loadCategory, addToCart, count } = props
+    const { isFiltering, filtered, list, category, loadCategory } = props
     return( <div className="container">
     <div className="row">
       <SideMenu loadCategory={loadCategory} category={category}/>
       <div className="col-sm">
         <div className="row">
-           <List data={isFiltering ? filtered : list[category]} category={category} addToCart={addToCart} count={count}/>
+           <List data={isFiltering ? filtered : list[category]} category={category} />
         </div>
       </div>
     </div>

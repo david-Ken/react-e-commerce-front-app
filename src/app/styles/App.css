@@ -137,6 +137,10 @@ footer {
 }
 .checkout {
   margin-top: 5px;
+  color: white!important;
+}
+.disabled {
+  opacity: .65;
 }
 .coupon {
   color: green;

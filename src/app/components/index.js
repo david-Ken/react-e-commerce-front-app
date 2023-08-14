@@ -1,10 +1,10 @@
 import React from 'react';
 
-export const Navbar = () => {
+export const Navbar = ({ filter, setFiltering }) => {
   return (
     <nav className='navbar orange navbar-expand-lg navbar-light bg-light fixed-top'>
       <a href='' className='navbar-brand crimson'>
-        <i class='fas fa-shopping-cart'></i> Mes Courses en Ligne
+        <i className='fas fa-shopping-cart'></i> Mes Courses en Ligne
       </a>
       <button
         className='navbar-toggler'
@@ -26,6 +26,10 @@ export const Navbar = () => {
                 type='search'
                 placeholder='Search'
                 aria-label='Search'
+                onChange={(e) => {
+                  setFiltering(e.target.value.length > 0);
+                  filter(e.target.value);
+                }}
               />
             </form>
           </div>
@@ -47,7 +51,7 @@ export const Footer = () => {
 };
 
 export const Card = (props) => {
-  const { fruit } = props;
+  const { item } = props;
   return (
     <div className='col-sm-4'>
       <div className='card'>
@@ -55,18 +59,18 @@ export const Card = (props) => {
           width='170'
           height='170'
           src={
-            process.env.PUBLIC_URL + `/assets/${fruit.category}/${fruit.image}`
+            process.env.PUBLIC_URL + `/assets/${item.category}/${item.image}`
           }
-          alt={fruit.name}
+          alt={item.name}
         />
         <div className='card-body'>
           <div className='row'>
             <div className='col-sm-6'>
-              <h4>{fruit.name}</h4>
+              <h4>{item.name}</h4>
             </div>
             <div className='col-sm-6'>
               <p>
-                €{fruit.price}/{fruit.unit}
+                €{item.price}/{item.unit}
               </p>
               <button className='btn btn-warning btn-sm'>view product</button>
             </div>
@@ -81,28 +85,28 @@ export const Card = (props) => {
 export const Modal = () => {
   return (
     <div
-      class='modal fade '
+      className='modal fade '
       id=''
       data-backdrop='static'
       tabindex='-1'
       role='dialog'
       aria-labelledby='staticBackdropLabel'
       aria-hidden='true'>
-      <div class='modal-dialog modal-xl' role='document'>
-        <div class='modal-content'>
-          <div class='modal-header'>
-            <h5 class='modal-title' id='staticBackdropLabel'>
+      <div className='modal-dialog modal-xl' role='document'>
+        <div className='modal-content'>
+          <div className='modal-header'>
+            <h5 className='modal-title' id='staticBackdropLabel'>
               Citrons
             </h5>
             <button
               type='button'
-              class='close'
+              className='close'
               data-dismiss='modal'
               aria-label='Close'>
               <span aria-hidden='true'>&times;</span>
             </button>
           </div>
-          <div class='modal-body'>
+          <div className='modal-body'>
             <div className='row'>
               <div className='col-sm-4'>
                 <img
@@ -114,7 +118,7 @@ export const Modal = () => {
               </div>
 
               <div className='col-sm'>
-                <p class='lead'>
+                <p className='lead'>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore
                 </p>
@@ -136,14 +140,17 @@ export const Modal = () => {
             </div>
           </div>
 
-          <div class='modal-footer'>
+          <div className='modal-footer'>
             <button
               type='button'
-              class='btn btn-secondary'
+              className='btn btn-secondary'
               data-dismiss='modal'>
               Close
             </button>
-            <button type='button' class='btn btn-success' data-dismiss='modal'>
+            <button
+              type='button'
+              className='btn btn-success'
+              data-dismiss='modal'>
               Add to Cart
             </button>
           </div>
@@ -155,12 +162,11 @@ export const Modal = () => {
 
 export const List = (props) => {
   const { data, category } = props;
-  const grocery = data[category];
   return (
     <div className='col-sm'>
       <div className='row'>
-        {grocery.map((fruit) => (
-          <Card key={fruit.ref} fruit={fruit} />
+        {data.map((item) => (
+          <Card key={item.ref} item={item} />
         ))}
       </div>
     </div>
